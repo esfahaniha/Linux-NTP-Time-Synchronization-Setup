@@ -11,7 +11,6 @@ A practical guide to configuring and verifying NTP time synchronization on Linux
 5. [Hardware Clock Sync](#hardware-clock-sync-optional)
 6. [Troubleshooting](#troubleshooting)
 7. [Verification Checklist](#verification-checklist)
-8. [Notes for Zabbix / Monitoring](#notes-for-zabbix--monitoring)
 
 ---
 
@@ -227,31 +226,6 @@ sudo firewall-cmd --reload
 - [ ] `System clock synchronized: yes`
 - [ ] Correct time zone set
 - [ ] NTP server reachable (`chronyc sources -v` or `timedatectl show-timesync --all`)
-- [ ] No drift greater than 60 seconds (critical for Zabbix / ELK stack accuracy)
 
 ---
 
-## Notes for Zabbix / Monitoring
-
-If Zabbix reports:
-
-```text
-System time is out of sync (>60s)
-```
-
-Do the following:
-
-1. Check the clock on **both** the Zabbix server and the affected agent — drift can originate from either side.
-2. Confirm NTP/chrony is active on all nodes involved.
-3. Restart the time sync service on the affected host(s).
-4. Re-check with `chronyc tracking` or `timedatectl status` after a minute to confirm the offset is settling.
-
----
-
-### Want to go further?
-
-This README can be extended into:
-
-- A GitHub-ready version with status badges
-- An Ansible playbook for fleet-wide NTP setup
-- A one-command fix script to run across multiple servers
